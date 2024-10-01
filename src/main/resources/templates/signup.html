@@ -1,75 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Signup Form</title>
-  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-  <link rel="stylesheet" href="/css/style.css">
-  <script src="/js/signup.js" defer></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BYP - Registration form</title>
+  <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}" />
+  <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
 </head>
 <body>
-<section>
-  <form action="/req/signup" method="post">
-    <h1>Sign Up</h1>
-    <div class="inputbox">
-      <ion-icon name="person-outline"></ion-icon>
-      <input type="text" id= "username" name="username" required>
-      <label for="">Name</label>
-    </div>
-    <div class="inputbox">
-      <ion-icon name="mail-outline"></ion-icon>
-      <input type="email" id="email" name="email" required>
-      <label for="">Email</label>
-    </div>
+<div class="container text-center">
+  <div>
+    <h1>User Registration - Sign Up</h1>
+  </div>
+  <form th:action="@{/process_register}" th:object="${user}"
+        method="POST" style="max-width: 600px; margin: 0 auto;">
+    <div class="m-3">
+      <div class="form-group row">
+        <label class="col-4 col-form-label">E-mail: </label>
+        <div class="col-8">
+          <input type="email" th:field="*{email}" class="form-control" required />
+        </div>
+      </div>
 
-    <div class="inputbox">
-      <ion-icon name="lock-closed-outline"></ion-icon>
-      <input type="password" id="password" name="password" required>
-      <label for="">Password</label>
-    </div>
-    <div class="inputbox">
-      <ion-icon name="lock-closed-outline"></ion-icon>
-      <input type="password" id="passwordcon" name="passwordcon" required>
-      <label for="">Confirm Password</label>
-    </div>
-    <button id= "submit" type="submit">Sign Up</button>
-    <div class="register">
-      <p>Already have an account? <a href="">Log In</a></p>
+      <div class="form-group row">
+        <label class="col-4 col-form-label">Password: </label>
+        <div class="col-8">
+          <input type="password" th:field="*{password}" class="form-control"
+                 required minlength="6" maxlength="10"/>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-4 col-form-label">First Name: </label>
+        <div class="col-8">
+          <input type="text" th:field="*{firstName}" class="form-control"
+                 required minlength="2" maxlength="20"/>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-4 col-form-label">Last Name: </label>
+        <div class="col-8">
+          <input type="text" th:field="*{lastName}" class="form-control"
+                 required minlength="2" maxlength="20" />
+        </div>
+      </div>
+
+      <div>
+        <button type="submit" class="btn btn-primary">Sign Up</button>
+      </div>
     </div>
   </form>
-</section>
+</div>
 </body>
 </html>
-<script>
-  const submitButton = document.getElementById("submit");
-  submitButton.addEventListener('click',()=>{
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-    const confirmPassword = document.getElementById('passwordcon').value;
-    const email = document.getElementById('email').value;
-    const data ={
-      username,
-      email,
-      password
-    }
-
-    if(password === confirmPassword){
-      const jsonData = JSON.stringify(data);
-      fetch('/req/signup', {
-        method: 'POST',
-        headers:{
-          'Content-Type': 'application/json'
-        },
-        body: jsonData
-      })
-              .then(response =>{
-                if(response.status === 200){
-                  alert('succesful');
-                }
-              })
-    }
-
-  })
-
-</script>
